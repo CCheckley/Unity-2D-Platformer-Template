@@ -3,7 +3,7 @@
     protected override void Start()
     {
         base.Start();
-        characterController = new PlayerCharacterController();
+        characterController = new PlayerController();
     }
 
     protected override void Update()

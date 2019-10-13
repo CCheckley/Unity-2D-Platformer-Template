@@ -8,7 +8,7 @@ public class Character2D : MonoBehaviour
     Animator animator;
     CircleCollider2D circleCollider;
 
-    protected CharacterController2D characterController;
+    protected ICharacterController characterController;
 
     [SerializeField] protected LayerMask floorLayer;
     [SerializeField] protected float movementSpeed = 1000.0f;
@@ -33,9 +33,7 @@ public class Character2D : MonoBehaviour
 
     protected virtual void Update()
     {
-        CharacterCommand characterCommand = characterController.HandleInput();
-        if (characterCommand != null)
-            characterCommand.Execute(this);
+        characterController.HandleInput(this);
     }
 
     public void Move(float xInput, bool isJumping)

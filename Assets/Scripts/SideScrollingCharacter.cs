@@ -1,39 +1,27 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(SpriteRenderer))]
-[RequireComponent(typeof(CircleCollider2D))]
-public class Character2D : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
+public class SideScrollingCharacter : MonoBehaviour
 {
     new Rigidbody2D rigidbody2D;
-    Animator animator;
-    CircleCollider2D circleCollider;
 
-    protected ICharacterController characterController;
-
-    [SerializeField] protected LayerMask floorLayer;
-    [SerializeField] protected float movementSpeed = 1000.0f;
+    [SerializeField] float movementSpeed = 1000.0f;
     [SerializeField] float jumpForce = 5000.0f;
+    [SerializeField] LayerMask floorLayer;
 
-    private bool isFacingRight;
+    bool isFacingRight;
 
-    protected virtual void Start()
+    void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        circleCollider = GetComponent<CircleCollider2D>();
 
-        //Setup character rigidbody
+        rigidbody2D.mass = 1.0f;
         rigidbody2D.isKinematic = false;
         rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
         rigidbody2D.angularDrag = 0.0f;
         rigidbody2D.gravityScale = 10.0f;
 
         isFacingRight = (transform.localScale.x > 0);
-    }
-
-    protected virtual void Update()
-    {
-        characterController.HandleInput(this);
     }
 
     public void Move(float xInput, bool isJumping)
@@ -47,7 +35,7 @@ public class Character2D : MonoBehaviour
             FlipHorizontal();
     }
 
-    private void FlipHorizontal()
+    public void FlipHorizontal()
     {
         Vector3 targetScale = transform.localScale;
         targetScale.x = -transform.localScale.x;
@@ -56,7 +44,7 @@ public class Character2D : MonoBehaviour
         isFacingRight = !isFacingRight;
     }
 
-    bool HasLanded()
+    public bool HasLanded()
     {
         return rigidbody2D.IsTouchingLayers(floorLayer);
     }
